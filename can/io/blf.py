@@ -17,7 +17,7 @@ import zlib
 import datetime
 import time
 import logging
-from typing import List, BinaryIO, Generator, Union, Tuple, Optional, cast
+from typing import List, BinaryIO, Generator, Union, Tuple, Optional, cast, Any
 
 from ..message import Message
 from ..util import len2dlc, dlc2len, channel2int
@@ -370,6 +370,8 @@ class BLFWriter(FileIOMessageWriter):
         append: bool = False,
         channel: int = 1,
         compression_level: int = -1,
+        *args: Any,
+        **kwargs: Any
     ) -> None:
         """
         :param file: a path-like object or as file-like object to write to
