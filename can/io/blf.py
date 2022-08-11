@@ -402,6 +402,9 @@ class BLFWriter(FileIOMessageWriter):
         self.compression_level = compression_level
         self._buffer: List[bytes] = []
         self._buffer_size = 0
+        # If max container size is located in kwargs, then update the instance
+        if kwargs.get("max_container_size", False):
+            self.max_container_size = kwargs["max_container_size"]
         if append:
             # Parse file header
             data = self.file.read(FILE_HEADER_STRUCT.size)
@@ -567,6 +570,10 @@ class BLFWriter(FileIOMessageWriter):
         self.uncompressed_size += OBJ_HEADER_BASE_STRUCT.size
         self.uncompressed_size += LOG_CONTAINER_STRUCT.size
         self.uncompressed_size += len(uncompressed_data)
+
+    def file_size(self) -> int:
+        """Return an estimate of the current file size in bytes."""
+        return self.file.tell() + self._buffer_size
 
     def stop(self):
         """Stops logging and closes the file."""
